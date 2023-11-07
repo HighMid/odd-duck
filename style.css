@@ -19,20 +19,19 @@ h1{
 
 footer {
     padding:35px;
-    background-color: rgb(200, 200, 200); /* Footer background */
-    justify-content: center; /* Center content in footer */
+    background-color: rgb(200, 200, 200);
+    justify-content: center;
 }
 
 .body-container {
     display: flex;
-
     background-color: beige;
 }
 
 .left-section {
     flex: 0 0 20%;
     margin: 15px;
-    background-color: rgb(230, 230, 230); /* Light grey background */
+    background-color: rgb(230, 230, 230);
     list-style-type: disc;
 }
 .left-section ul{
@@ -63,19 +62,20 @@ footer {
 }
 
 .upper-right img {
-    width: 485px; /* Adjust based on your desired spacing */
+    width: 485px;
     height: 400px;
-    object-fit: cover;
-    background-color: #ddd; /* Placeholder background color */
-    border: 1px solid #ccc; /* Placeholder border */
+    object-fit: fill;
+    padding: 5px;
+    background-color: beige;
 }
 
 .lower-right {
+
     flex-grow: 1;
-    background-color: #f0f0f0; /* Lighter grey background */
+    object-fit: contain;
+    background-color: #f0f0f0;
     padding: 15px;
-    margin: auto;
-    overflow: auto; /* Allows scrolling for long text */
+    
 }
 
 body, html {
@@ -98,5 +98,10 @@ button{
     color:yellow;
 }
 .body-container {
-    flex: 1; /* Grow to fill available space */
+    flex: 1;
+}
+
+#bar-chart {
+    width: 100%;
+    max-height: 575px;
 }
