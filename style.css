@@ -1,0 +1,99 @@
+header, footer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgb(226, 72, 72);
+}
+header img {
+    margin-right: 15px;
+}
+header{
+    padding: 15px;
+}
+
+h1{
+    margin-left: 5px;
+    font-size:45px;
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    padding:35px;
+    background-color: rgb(200, 200, 200); /* Footer background */
+    justify-content: center; /* Center content in footer */
+}
+
+.body-container {
+    display: flex;
+    background-color: beige;
+}
+
+.left-section {
+    flex: 1;
+    margin: 15px;
+    background-color: rgb(230, 230, 230); /* Light grey background */
+    list-style-type: disc;
+}
+.left-section ul{
+    list-style-type: disc; /* or "circle" or "square" if you prefer */
+    padding-left: 20px;
+}
+.left-section li{
+    padding:2px;
+}
+.left-section h2{
+    font-size:25px;
+    padding:10px;
+    text-align: center;
+    color:red
+}
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.upper-right {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 75px;
+}
+
+.upper-right img {
+    width: 350px; /* Adjust based on your desired spacing */
+    height: 335px;
+    background-color: #ddd; /* Placeholder background color */
+    border: 1px solid #ccc; /* Placeholder border */
+}
+
+.lower-right {
+    flex-grow: 1;
+    background-color: #f0f0f0; /* Lighter grey background */
+    padding: 15px;
+    margin: auto;
+    overflow: auto; /* Allows scrolling for long text */
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+p{
+    padding:10px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+button{
+    padding: 5px;
+    background-color: black;
+    color:yellow;
+}
+.body-container {
+    flex: 1; /* Grow to fill available space */
+}
