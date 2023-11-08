@@ -31,6 +31,7 @@ const midRandImg = document.querySelector('section img:nth-child(2)');
 const rightRandImg = document.querySelector('section img:nth-child(3)');
 const Results = document.querySelector('article h2');
 const listResults = document.querySelector('article ul');
+const ImgStorageKey = "Img-storage-key";
 
 let clicks = 0;
 const maxClicks = 25;
@@ -41,17 +42,46 @@ let rightImgInstance = 0;
 
 // Constructor for images
 
-function imageGen(name, src, altText){
+function imageGen(name, src, altText, view = 0, click = 0){
     this.name = name;
     this.src = src;
     this.altText = altText;
-    this.view = 0;
-    this.click = 0;
+    this.view = view;
+    this.click = click;
 
 
 }
+function localImgStorage(){
 
-function test(){
+    localStorage.setItem(ImgStorageKey, JSON.stringify(allImgInstances));
+}
+
+function loadImgFromStorage(){
+
+    const storedImgText = localStorage.getItem(ImgStorageKey);
+
+    if(storedImgText){
+        parseImgText(storedImgText);
+    }else {
+        pushImg();
+    }
+    
+
+}
+
+function parseImgText(storedImgText){
+
+    const storedImgObjects = JSON.parse(storedImgText);
+
+    allImgInstances.length = 0;
+
+    for(let ImgObject of storedImgObjects){
+        const currentImg = new imageGen(ImgObject.name , ImgObject.src , ImgObject.altText, ImgObject.view, ImgObject.click)
+        allImgInstances.push(currentImg);
+    }
+}
+
+function pushImg(){
     for(let i=0; i < allImgs.length; i++){
         const images = allImgs[i];
         allImgInstances.push(new imageGen(images.name, images.src, images.altText));
@@ -80,6 +110,7 @@ function renderImg(){
             resultsButton.style.display = 'none'; 
         });
         
+        localImgStorage();
 
         return; 
     }
@@ -171,32 +202,14 @@ function renderChart(){
     const barChart = new Chart(canvasChart, config);
 }
 
-// Function to push all to an array, helps with clutter
-// Branch dataviz, commented due to all being inside allImgs array.
+function start(){
+    leftRandImg.addEventListener('click' , handleLeftRandImg);
+    midRandImg.addEventListener('click' , handleMidRandImg);
+    rightRandImg.addEventListener('click' , handleRightRandImg);
 
-// function pushImg(){
-//     allImgs.push(bag);
-//     allImgs.push(banana);
-//     allImgs.push(bathroom);
-//     allImgs.push(boots);
-//     allImgs.push(breakfast);
-//     allImgs.push(bubblegum);
-//     allImgs.push(chair);
-//     allImgs.push(cthuhlu);
-//     allImgs.push(dog_duck);
-//     allImgs.push(dragon);
-//     allImgs.push(pen);
-//     allImgs.push(pet_sweet);
-//     allImgs.push(scissors);
-//     allImgs.push(sharks);
-//     allImgs.push(sweep);
-//     allImgs.push(tauntaun);
-//     allImgs.push(unicorn);
-//     allImgs.push(water_can);
-//     allImgs.push(wine_glass);
-// }
-
-// Function to shuffle the array
+    loadImgFromStorage();
+    renderImg();
+}
 
 function randomImg(array){
     for (let i = array.length - 1; i > 0; i--) {
@@ -250,12 +263,4 @@ function handleResultsClick(){
 
 
 
-leftRandImg.addEventListener('click' , handleLeftRandImg);
-midRandImg.addEventListener('click' , handleMidRandImg);
-rightRandImg.addEventListener('click' , handleRightRandImg);
-
-
-// pushImg();
-
-test();
-renderImg();
+start();
