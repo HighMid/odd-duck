@@ -2,7 +2,30 @@
 
 // Variables Initialization and Declaration
 
-const allImg = [];
+const allImgs = [
+    { name: 'Bag', src: 'img/bag.jpg', altText: 'Picture of a two R2D2 luggage bags' },
+    { name: 'Banana', src: 'img/banana.jpg', altText: 'A sliced banana' },
+    { name: 'Bathroom', src: 'img/bathroom.jpg', altText: 'Ipad attached to toilet paper stand' },
+    { name: 'Boots', src: 'img/boots.jpg', altText: '3D render yellow open toed boots' },
+    { name: 'Breakfast', src: 'img/breakfast.jpg', altText: 'Breakfast inside a toaster over/coffee maker combo' },
+    { name: 'Bubblegum', src: 'img/bubblegum.jpg', altText: 'Meatball bubble gum' },
+    { name: 'Chair', src: 'img/chair.jpg', altText: 'Red chair with a bump on the seat' },
+    { name: 'Cthulu', src: 'img/cthulhu.jpg', altText: 'Toy cthuhlu who looks like a mind flayer' },
+    { name: 'Dog-duck', src: 'img/dog-duck.jpg', altText: 'Small dog with a toy duck beak' },
+    { name: 'Dragon', src: 'img/dragon.jpg', altText: 'Dragon tail meat in a can' },
+    { name: 'Pen', src: 'img/pen.jpg', altText: "Pen's with blue colored utensil caps" },
+    { name: 'Pet-sweep', src: 'img/pet-sweep.jpg', altText: 'Broom sweeper attachments for humans and dogs' },
+    { name: 'Scissors', src: 'img/scissors.jpg', altText: 'Scissors that can also be used to cut and take pizza slices' },
+    { name: 'Shark', src: 'img/shark.jpg', altText: 'guy sleeping in a shark sleeping bag' },
+    { name: 'Sweep', src: 'img/sweep.png', altText: 'Baby boy in a suit that resembles a floor sweeper' },
+    { name: 'Tauntaun', src: 'img/tauntaun.jpg', altText: 'Boy inside a tauntaun sleeping bag' },
+    { name: 'Unicorn', src: 'img/unicorn.jpg', altText: 'Delicious unicorn meat in a can' },
+    { name: 'Water-can', src: 'img/water-can.jpg', altText: 'Watering can with a backwards neck' },
+    { name: 'Wine-glass', src: 'img/wine-glass.jpg', altText: 'Wine glass thats only open on one side' },
+];
+const allImgInstances = [];
+let usedImgs = [];
+
 const leftRandImg = document.querySelector('section img:first-child');
 const midRandImg = document.querySelector('section img:nth-child(2)');
 const rightRandImg = document.querySelector('section img:nth-child(3)');
@@ -12,9 +35,9 @@ const listResults = document.querySelector('article ul');
 let clicks = 0;
 const maxClicks = 25;
 
-let leftImgInstance = null;
-let midImgInstance = null;
-let rightImgInstance = null;
+let leftImgInstance = 0;
+let midImgInstance = 0;
+let rightImgInstance = 0;
 
 // Constructor for images
 
@@ -24,8 +47,16 @@ function imageGen(name, src, altText){
     this.altText = altText;
     this.view = 0;
     this.click = 0;
+
+
 }
 
+function test(){
+    for(let i=0; i < allImgs.length; i++){
+        const images = allImgs[i];
+        allImgInstances.push(new imageGen(images.name, images.src, images.altText));
+    }
+}
 // Function to show images and tally clicks/views and repeat until otherwise
 
 function renderImg(){
@@ -45,17 +76,23 @@ function renderImg(){
 
         resultsButton.addEventListener('click', function() {
             renderResults();
+            renderChart();
             resultsButton.style.display = 'none'; 
         });
+        
 
         return; 
     }
 
-    randomImg(allImg);
+    if(usedImgs.length < 3){
+        usedImgs = allImgInstances.slice();
+        randomImg(usedImgs);
+    }
+    
 
-    leftImgInstance = allImg[0];
-    midImgInstance = allImg[1];
-    rightImgInstance = allImg[2];
+    leftImgInstance = usedImgs.pop();
+    midImgInstance = usedImgs.pop();
+    rightImgInstance = usedImgs.pop();
 
 
     leftRandImg.setAttribute('src', leftImgInstance.src);
@@ -72,30 +109,92 @@ function renderImg(){
     rightImgInstance.view++;
 
 }
+function renderChart(){
+
+    const imgNames = [];
+    const imgClicks = [];
+    const imgViews = [];
+
+    for(let i=0; i<allImgInstances.length; i++){
+
+        const currentImg = allImgInstances[i];
+        const imgName = currentImg.name;
+        const imgClick = currentImg.click;
+        const imgView = currentImg.view;
+
+        imgViews.push(imgView);
+        imgClicks.push(imgClick);
+        imgNames.push(imgName);
+    }
+
+    const data = {
+        labels: imgNames,
+        datasets:   [{
+            label: 'Likes',
+            data: imgClicks,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)'
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Views',
+            data: imgViews,
+            backgroundColor: [
+                'rgba(225, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                `rgb(255, 159, 64)`
+            ],
+            borderWidth: 1
+
+        }
+    ]}
+
+    const config = {
+        type: 'bar',
+        data: data,
+        option: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+
+    };
+
+    let canvasChart = document.getElementById('bar-chart');
+    const barChart = new Chart(canvasChart, config);
+}
 
 // Function to push all to an array, helps with clutter
+// Branch dataviz, commented due to all being inside allImgs array.
 
-function pushImg(){
-    allImg.push(bag);
-    allImg.push(banana);
-    allImg.push(bathroom);
-    allImg.push(boots);
-    allImg.push(breakfast);
-    allImg.push(bubblegum);
-    allImg.push(chair);
-    allImg.push(cthuhlu);
-    allImg.push(dog_duck);
-    allImg.push(dragon);
-    allImg.push(pen);
-    allImg.push(pet_sweet);
-    allImg.push(scissors);
-    allImg.push(sharks);
-    allImg.push(sweep);
-    allImg.push(tauntaun);
-    allImg.push(unicorn);
-    allImg.push(water_can);
-    allImg.push(wine_glass);
-}
+// function pushImg(){
+//     allImgs.push(bag);
+//     allImgs.push(banana);
+//     allImgs.push(bathroom);
+//     allImgs.push(boots);
+//     allImgs.push(breakfast);
+//     allImgs.push(bubblegum);
+//     allImgs.push(chair);
+//     allImgs.push(cthuhlu);
+//     allImgs.push(dog_duck);
+//     allImgs.push(dragon);
+//     allImgs.push(pen);
+//     allImgs.push(pet_sweet);
+//     allImgs.push(scissors);
+//     allImgs.push(sharks);
+//     allImgs.push(sweep);
+//     allImgs.push(tauntaun);
+//     allImgs.push(unicorn);
+//     allImgs.push(water_can);
+//     allImgs.push(wine_glass);
+// }
 
 // Function to shuffle the array
 
@@ -133,8 +232,8 @@ function handleRightRandImg() {
 // Function to tally total views/clicks per image and display a list of them
 
 function renderResults() {
-    for(let i=0; i<allImg.length; i++) {
-      const currentImg = allImg[i];
+    for(let i=0; i<allImgInstances.length; i++) {
+      const currentImg = allImgInstances[i];
       const result = `${currentImg.name} had ${currentImg.view} views and was clicked ${currentImg.click} times.`;
       // console.log(result);
       const liElem = document.createElement('li');
@@ -149,30 +248,14 @@ function handleResultsClick(){
     renderResults();
 }
 
-let bag = new imageGen('Bag', 'img/bag.jpg','Picture of a two R2D2 luggage bags');
-let banana = new imageGen('Banana', 'img/banana.jpg', 'A sliced banana');
-let bathroom = new imageGen('Bathroom', 'img/bathroom.jpg', 'Ipad attached to toilet paper stand');
-let boots = new imageGen('Boots', 'img/boots.jpg', '3D render yellow open toed boots');
-let breakfast = new imageGen('Breakfast', 'img/breakfast.jpg', 'Breakfast inside a toaster over/coffee maker combo');
-let bubblegum = new imageGen('Bubblegum', 'img/bubblegum.jpg', 'Meatball bubble gum');
-let chair = new imageGen('Chair', 'img/chair.jpg', 'Red chair with a bump on the seat');
-let cthuhlu = new imageGen('Bag', 'img/cthulhu.jpg', 'Toy cthuhlu who looks like a mind flayer');
-let dog_duck = new imageGen('Dog-duck', 'img/dog-duck.jpg', 'Small dog with a toy duck beak');
-let dragon = new imageGen('Dragon', 'img/dragon.jpg', 'Dragon tail meat in a can');
-let pen = new imageGen('Pen', 'img/pen.jpg', "Pen's with blue colored utensil caps");
-let pet_sweet = new imageGen('Pet-sweet', 'img/pet-sweep.jpg', 'Broom sweeper attachments for humans and dogs');
-let scissors = new imageGen('Scissors', 'img/scissors.jpg', 'Scissors that can also be used to cut and take pizza slices');
-let sharks = new imageGen('Shark', 'img/shark.jpg', 'guy sleeping in a shark sleeping bag');
-let sweep = new imageGen('Sweep', 'img/sweep.png', 'Baby boy in a suit that resembles a floor sweeper');
-let tauntaun = new imageGen('Tauntaun', 'img/tauntaun.jpg', 'Boy inside a tauntaun sleeping bag');
-let unicorn = new imageGen('Unicorn', 'img/unicorn.jpg', 'Delicious unicorn meat in a can');
-let water_can = new imageGen('Water-can', 'img/water-can.jpg', 'Watering can with a backwards neck');
-let wine_glass = new imageGen('Wine-glass', 'img/wine-glass.jpg', 'Wine glass thats only open on one side');
+
 
 leftRandImg.addEventListener('click' , handleLeftRandImg);
 midRandImg.addEventListener('click' , handleMidRandImg);
 rightRandImg.addEventListener('click' , handleRightRandImg);
 
 
-pushImg();
+// pushImg();
+
+test();
 renderImg();
